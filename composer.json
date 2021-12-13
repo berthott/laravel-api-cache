@@ -1,0 +1,32 @@
+{
+  "name": "berthott/laravel-api-cache",
+  "description": "Laravel Helper for Caching API Responses",
+  "license": "MIT",
+  "authors": [
+      {
+          "name": "Jan Bladt",
+          "email": "berthott@web.de"
+      }
+  ],
+  "autoload" : {
+      "psr-4" : {
+          "berthott\\Cache\\": "src"
+      }
+  },
+  "autoload-dev": {
+      "psr-4": {
+          "berthott\\Cache\\Tests\\": "tests"
+      }
+  },
+  "extra" : {
+      "laravel" : {
+          "providers" : [
+              "berthott\\Cache\\CacheServiceProvider"
+          ]
+      }
+  },
+  "require-dev": {
+    "orchestra/testbench": "^6.0",
+    "phpunit/phpunit": "^9.5"
+  }
+}
