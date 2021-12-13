@@ -10,18 +10,18 @@
   ],
   "autoload" : {
       "psr-4" : {
-          "berthott\\Cache\\": "src"
+          "berthott\\ApiCache\\": "src"
       }
   },
   "autoload-dev": {
       "psr-4": {
-          "berthott\\Cache\\Tests\\": "tests"
+          "berthott\\ApiCache\\Tests\\": "tests"
       }
   },
   "extra" : {
       "laravel" : {
           "providers" : [
-              "berthott\\Cache\\CacheServiceProvider"
+              "berthott\\ApiCache\\ApiCacheServiceProvider"
           ]
       }
   },
