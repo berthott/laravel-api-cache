@@ -11,5 +11,5 @@ return [
     |
     */
 
-    'lifetime' => [14],
+    'lifetime' => 14,
 ];
