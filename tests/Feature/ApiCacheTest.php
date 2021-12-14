@@ -2,21 +2,42 @@
 
 namespace berthott\ApiCache\Tests\Feature;
 
+use berthott\ApiCache\Facades\ApiCache;
 use berthott\ApiCache\Http\Middleware\ApiCacheMiddleware;
+use berthott\ApiCache\Tests\DummyDummy;
 use berthott\ApiCache\Tests\TestCase;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
 class ApiCacheTest extends TestCase
 {
     public function test_the_test_setup(): void
     {
-        $this->assertContains('dummy_dependencies.show', array_keys(Route::getRoutes()->getRoutesByName()));
-        $this->get(route('dummy_dependencies.show', ['dummy_dependency' => '1']))->assertSeeText('dummy_dependencies');
+        $this->assertContains('dummy_dummies.test', array_keys(Route::getRoutes()->getRoutesByName()));
+        $this->get(route('dummy_dummies.test', ['dummy_dummy' => '1']))->assertSeeText('dummy_dummies');
     }
 
-    /* public function test_route_caches(): void
+    public function test_route_caches(): void
     {
+        $route = route('dummy_dummies.test', ['dummy_dummy' => '1', 'some_more_args' => 'hallo']);
+        ApiCache::shouldReceive('get')
+            ->withSomeOfArgs('api/alongtesturl/dummy_dummies/1a:1:{s:14:"some_more_args";s:5:"hallo";}', 'dummy_dummies')
+            ->andReturn(new Response('cached Value'));
+        $this->get($route)->assertSeeText('cached Value');
+    }
 
-    } */
+    public function test_flush_caches(): void
+    {
+        ApiCache::spy();
+        $dummy = DummyDummy::create(['name' => 'test']);
+        ApiCache::shouldHaveReceived('flush')->with('dummy_dummies')->once();
+        ApiCache::shouldHaveReceived('flush')->with('dummy_dummy_dependencies')->once();
+        $dummy->name = 'changed';
+        ApiCache::shouldHaveReceived('flush')->with('dummy_dummies')->once();
+        ApiCache::shouldHaveReceived('flush')->with('dummy_dummy_dependencies')->once();
+        $dummy->delete();
+        ApiCache::shouldHaveReceived('flush')->with('dummy_dummies');
+        ApiCache::shouldHaveReceived('flush')->with('dummy_dummy_dependencies');
+    }
 }

@@ -22,19 +22,22 @@ class ApiCacheServiceProvider extends ServiceProvider
 
         // add config
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'api-cache');
+
+
     }
 
     /**
      * Bootstrap services.
      */
-    public function boot(): void
+    public function boot(Kernel $kernel): void
     {
         // publish config
         $this->publishes([
             __DIR__.'/../config/config.php' => config_path('api-cache.php'),
         ], 'config');
 
-        $router = $this->app->make(Router::class);
+        // add middleware
+        $router = app(Router::class);
         $router->pushMiddlewareToGroup('api', ApiCacheMiddleware::class);
     }
 }

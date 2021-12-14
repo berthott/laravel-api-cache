@@ -3,13 +3,14 @@
 namespace berthott\ApiCache\Models\Traits;
 
 use berthott\ApiCache\Facades\ApiCache;
+use Illuminate\Support\Str;
 
 trait FlushesApiCache
 {
     /**
      * Returns an array of dependencies to flush.
      */
-    public function cacheDependencies(): array
+    public static function cacheDependencies(): array
     {
         return [];
     }
@@ -20,25 +21,33 @@ trait FlushesApiCache
     public static function bootFlushesApiCache()
     {
         self::created(function () {
-            $this->flushCache();
+            self::flushCache();
         });
 
         self::updated(function () {
-            $this->flushCache();
+            self::flushCache();
         });
 
         self::deleted(function () {
-            $this->flushCache();
+            self::flushCache();
         });
+    }
+
+    /**
+     * The entity table name of the model.
+     */
+    protected static function flushKey(): string
+    {
+        return Str::snake(Str::pluralStudly(class_basename(get_called_class())));
     }
 
     /**
      * Flush own and dependencies cache.
      */
-    private function flushCache()
+    private static function flushCache()
     {
-        ApiCache::flush($this->getTable());
-        foreach ($this->cacheDependencies() as $dependency) {
+        ApiCache::flush(self::flushKey());
+        foreach (self::cacheDependencies() as $dependency) {
             ApiCache::flush($dependency);
         }
     }

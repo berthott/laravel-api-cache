@@ -4,6 +4,7 @@ namespace berthott\ApiCache\Tests;
 
 use berthott\ApiCache\ApiCacheServiceProvider;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
@@ -25,23 +26,24 @@ abstract class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app)
     {
         $this->setUpTables();
-        Route::get('dummies', function () {
-            return 'dummies';
-        })->name('dummies.show');
-        Route::get('/along/url/dummy_dependencies/{dummy_dependency}', function (DummyDependency $dummy) {
-            return 'dummy_dependencies';
-        })->name('dummy_dependencies.show');
+        Route::prefix('api')
+            ->middleware('api')
+            ->group(function () {
+                Route::get('/alongtesturl/dummy_dummies/{dummy_dummy}', function () {
+                    return 'dummy_dummies';
+                })->name('dummy_dummies.test');
+                Route::get('/along/url/dummy_dummies/{dummy_dummy}', function (DummyDummy $dummy) {
+                    return $dummy;
+                })->name('dummy_dummies.show');
+            });
     }
 
     private function setUpTables(): void
     {
-        Schema::create('dummies', function (Blueprint $table) {
+        Schema::create('dummy_dummies', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-        });
-        Schema::create('dummy_dependencies', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
+            $table->timestamps();
         });
     }
 }
