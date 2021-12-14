@@ -36,8 +36,10 @@ class ApiCacheServiceProvider extends ServiceProvider
             __DIR__.'/../config/config.php' => config_path('api-cache.php'),
         ], 'config');
 
-        // add middleware
-        $router = app(Router::class);
-        $router->pushMiddlewareToGroup('api', ApiCacheMiddleware::class);
+        if (config('api-cache.enabled')) {
+            // add middleware
+            $router = app(Router::class);
+            $router->pushMiddlewareToGroup('api', ApiCacheMiddleware::class);
+        }
     }
 }
