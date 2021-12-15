@@ -10,19 +10,21 @@ $ composer require berthott/laravel-api-cache
 
 ## Usage
 
-* Create your table and corresponding model, eg. with `php artisan make:model YourModel -m`
-* Add the `Crudable` Trait to your newly generated model.
-* That's it. The package will register API CRUD routes (see [API Resource Routes](https://laravel.com/docs/8.x/controllers#api-resource-routes)) which will be handled by a generic CrudableController.
+* The package automatically caches all responses to GET requests when installed and enabled.
+  * The package assumes, that your routes are named according to Laravels Route::apiResource helper ('tablename.method').
+  * Responses are grouped via the table name (more specifically the first part of the route name, so custom route names are supported too).
+* To automatically flush the cache corresponding to your model add the `FlushesApiCache` Trait to your model.
+  * This will flush the cache for any model creation, update or deletion.
+  * To also flush dependent models override the Traits `cacheDependencies` method and return a list of related route names.
 
 ## Options
 
 To change the default options use
 ```
-$ php artisan vendor:publish --provider="berthott\Crudable\CrudableServiceProvider" --tag="config"
+$ php artisan vendor:publish --provider="berthott\ApiCache\ApiCacheServiceProvider" --tag="config"
 ```
-* `middleware`: an array of middlewares that will be added to the generated routes
-* `namespace`: string or array with one ore multiple namespaces that should be monitored for the Crudable-Trait. Defaults to `App\Models`.
-* `prefix`: route prefix. Defaults to `api`
+* `enabled`: enables the feature and can be changed via CACHE_API. Defaults to `false`.
+* `lifetime`: the lifetime of the cache. Defaults to `14`.
 
 ## Compatibility
 
