@@ -4,7 +4,7 @@ namespace berthott\ApiCache\Tests;
 
 use berthott\ApiCache\ApiCacheServiceProvider;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
@@ -25,6 +25,7 @@ abstract class TestCase extends BaseTestCase
 
     protected function getEnvironmentSetUp($app)
     {
+        Config::set('api-cache.enabled', true);
         $this->setUpTables();
         Route::prefix('api')
             ->middleware('api')
