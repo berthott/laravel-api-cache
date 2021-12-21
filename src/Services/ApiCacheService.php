@@ -3,6 +3,7 @@
 namespace berthott\ApiCache\Services;
 
 use Illuminate\Support\Facades\Cache;
+use Throwable;
 
 class ApiCacheService
 {
@@ -19,7 +20,11 @@ class ApiCacheService
         }
 
         $response = $callback();
-        $store->put($cacheKey, $response, now()->addDays(config('api-cache.lifetime')));
+        try {
+            $store->put($cacheKey, $response, now()->addDays(config('api-cache.lifetime')));
+        } catch (Throwable $error) {
+            // just catch the error
+        }
         return $response;
     }
 
