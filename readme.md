@@ -24,6 +24,7 @@ To change the default options use
 $ php artisan vendor:publish --provider="berthott\ApiCache\ApiCacheServiceProvider" --tag="config"
 ```
 * `enabled`: enables the feature and can be changed via CACHE_API. Defaults to `false`.
+* `ignoreRoutes`: an array of route names to be ignored from the cache. Defaults to an empty array.
 * `lifetime`: the lifetime of the cache. Defaults to `14`.
 
 ## Compatibility

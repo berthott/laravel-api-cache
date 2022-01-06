@@ -27,6 +27,12 @@ class ApiCacheTest extends TestCase
         $this->get($route)->assertSeeText('cached Value');
     }
 
+    public function test_route_caches_ignore(): void
+    {
+        ApiCache::shouldReceive('get')->times(0);
+        $this->get(route('dummy_dummies.ignore'));
+    }
+
     public function test_flush_caches(): void
     {
         ApiCache::spy();

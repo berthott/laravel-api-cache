@@ -26,6 +26,7 @@ abstract class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app)
     {
         Config::set('api-cache.enabled', true);
+        Config::set('api-cache.ignoreRoutes', ['dummy_dummies.ignore']);
         $this->setUpTables();
         Route::prefix('api')
             ->middleware('api')
@@ -33,9 +34,9 @@ abstract class TestCase extends BaseTestCase
                 Route::get('/alongtesturl/dummy_dummies/{dummy_dummy}', function () {
                     return 'dummy_dummies';
                 })->name('dummy_dummies.test');
-                Route::get('/along/url/dummy_dummies/{dummy_dummy}', function (DummyDummy $dummy) {
-                    return $dummy;
-                })->name('dummy_dummies.show');
+                Route::get('/dummy_dummies', function () {
+                    return 'hello';
+                })->name('dummy_dummies.ignore');
             });
     }
 

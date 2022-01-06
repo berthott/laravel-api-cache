@@ -14,7 +14,7 @@ class ApiCacheMiddleware
      */
     public function handle(Request $request, Closure $next): mixed
     {
-        if ($request->method() !== 'GET') {
+        if ($request->method() !== 'GET' || in_array($request->route()->getName(), config('api-cache.ignoreRoutes'))) {
             return $next($request);
         }
         
