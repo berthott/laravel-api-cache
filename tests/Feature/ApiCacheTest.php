@@ -4,8 +4,10 @@ namespace berthott\ApiCache\Tests\Feature;
 
 use berthott\ApiCache\Facades\ApiCache;
 use berthott\ApiCache\Http\Middleware\ApiCacheMiddleware;
+use berthott\ApiCache\Listeners\FlushApiCache;
 use berthott\ApiCache\Tests\DummyDummy;
 use berthott\ApiCache\Tests\TestCase;
+use berthott\ApiCache\Tests\TestEvent;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -45,5 +47,16 @@ class ApiCacheTest extends TestCase
         $dummy->delete();
         ApiCache::shouldHaveReceived('flush')->with('dummy_dummies');
         ApiCache::shouldHaveReceived('flush')->with('dummy_dummy_dependencies');
+    }
+
+    public function test_flush_caches_listener(): void
+    {
+        ApiCache::spy();
+        DummyDummy::create(['name' => 'test']);
+        ApiCache::shouldHaveReceived('flush')->with('dummy_dummies')->once();
+        ApiCache::shouldHaveReceived('flush')->with('dummy_dummy_dependencies')->once();
+        (new FlushApiCache())->handle(new TestEvent(DummyDummy::class));
+        ApiCache::shouldHaveReceived('flush')->with('dummy_dummies')->twice();
+        ApiCache::shouldHaveReceived('flush')->with('dummy_dummy_dependencies')->twice();
     }
 }

@@ -44,7 +44,7 @@ trait FlushesApiCache
     /**
      * Flush own and dependencies cache.
      */
-    private static function flushCache()
+    public static function flushCache()
     {
         ApiCache::flush(self::flushKey());
         foreach (self::cacheDependencies() as $dependency) {
