@@ -20,16 +20,16 @@ trait FlushesApiCache
      */
     public static function bootFlushesApiCache()
     {
-        self::created(function () {
-            self::flushCache();
+        static::created(function () {
+            static::flushCache();
         });
 
-        self::updated(function () {
-            self::flushCache();
+        static::updated(function () {
+            static::flushCache();
         });
 
-        self::deleted(function () {
-            self::flushCache();
+        static::deleted(function () {
+            static::flushCache();
         });
     }
 
@@ -46,8 +46,8 @@ trait FlushesApiCache
      */
     public static function flushCache()
     {
-        ApiCache::flush(self::flushKey());
-        foreach (self::cacheDependencies() as $dependency) {
+        ApiCache::flush(static::flushKey());
+        foreach (static::cacheDependencies() as $dependency) {
             ApiCache::flush($dependency);
         }
     }
