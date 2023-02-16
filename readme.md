@@ -29,8 +29,8 @@ $ php artisan vendor:publish --provider="berthott\ApiCache\ApiCacheServiceProvid
 
 ## Compatibility
 
-Tested with Laravel 8.x.
+Tested with Laravel 10.x.
 
 ## License
 
-See [License File](license.md). Copyright © 2021 Jan Bladt.
+See [License File](license.md). Copyright © 2023 Jan Bladt.
