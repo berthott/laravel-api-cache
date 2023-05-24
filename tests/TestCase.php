@@ -26,6 +26,7 @@ abstract class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app)
     {
         Config::set('api-cache.enabled', true);
+        Config::set('api-cache.key', 'test key');
         Config::set('api-cache.ignoreRoutes', ['dummy_dummies.ignore']);
         $this->setUpTables();
         Route::prefix('api')

@@ -24,7 +24,7 @@ class ApiCacheTest extends TestCase
     {
         $route = route('dummy_dummies.test', ['dummy_dummy' => '1', 'some_more_args' => 'hallo']);
         ApiCache::shouldReceive('get')
-            ->withSomeOfArgs('api/alongtesturl/dummy_dummies/1a:1:{s:14:"some_more_args";s:5:"hallo";}', 'dummy_dummies')
+            ->withSomeOfArgs('api/alongtesturl/dummy_dummies/1a:1:{s:14:"some_more_args";s:5:"hallo";}', 'test_key_dummy_dummies')
             ->andReturn(new Response('cached Value'));
         $this->get($route)->assertSeeText('cached Value');
     }

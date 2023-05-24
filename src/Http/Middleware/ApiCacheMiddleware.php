@@ -5,7 +5,7 @@ namespace berthott\ApiCache\Http\Middleware;
 use berthott\ApiCache\Facades\ApiCache;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 class ApiCacheMiddleware
 {
@@ -20,6 +20,6 @@ class ApiCacheMiddleware
         
         return ApiCache::get($request->path().serialize($request->all()), function () use ($next, $request) {
             return $next($request);
-        }, explode('.', $request->route()->getName())[0]);
+        }, Str::replace(' ', '_', config('api-cache.key')).'_'.explode('.', $request->route()->getName())[0]);
     }
 }
