@@ -3,7 +3,6 @@
 namespace berthott\ApiCache;
 
 use berthott\ApiCache\Http\Middleware\ApiCacheMiddleware;
-use berthott\ApiCache\Services\ApiCacheService;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
@@ -16,9 +15,6 @@ class ApiCacheServiceProvider extends ServiceProvider
     public function register(): void
     {
         // bind singletons
-        $this->app->singleton('ApiCache', function () {
-            return new ApiCacheService();
-        });
 
         // add config
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'api-cache');

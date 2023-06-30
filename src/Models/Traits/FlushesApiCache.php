@@ -2,7 +2,7 @@
 
 namespace berthott\ApiCache\Models\Traits;
 
-use berthott\ApiCache\Facades\ApiCache;
+use Facades\berthott\ApiCache\Services\ApiCacheService;
 use Illuminate\Support\Str;
 
 trait FlushesApiCache
@@ -46,9 +46,9 @@ trait FlushesApiCache
      */
     public static function flushCache()
     {
-        ApiCache::flush(static::flushKey());
+        ApiCacheService::flush(static::flushKey());
         foreach (static::cacheDependencies() as $dependency) {
-            ApiCache::flush($dependency);
+            ApiCacheService::flush($dependency);
         }
     }
 }
