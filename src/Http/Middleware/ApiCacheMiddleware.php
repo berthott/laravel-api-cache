@@ -7,10 +7,15 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
+/**
+ * Middleware to handle the caching.
+ */
 class ApiCacheMiddleware
 {
     /**
      * Handle an incoming request.
+     * 
+     * Only non-ignored GET requests will be handled.
      */
     public function handle(Request $request, Closure $next): mixed
     {

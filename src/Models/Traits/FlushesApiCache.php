@@ -5,10 +5,19 @@ namespace berthott\ApiCache\Models\Traits;
 use Facades\berthott\ApiCache\Services\ApiCacheService;
 use Illuminate\Support\Str;
 
+/**
+ * Trait to add auto flushing functionality.
+ */
 trait FlushesApiCache
 {
     /**
      * Returns an array of dependencies to flush.
+     *  
+     * **optional**
+     * 
+     * Defaults to `[]`.
+     * 
+     * @api
      */
     public static function cacheDependencies(): array
     {

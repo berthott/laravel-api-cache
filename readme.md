@@ -1,31 +1,33 @@
-# Laravel-API-Cache - A helper for caching complete API Responses
+# Laravel-API-Cache
 
-Easily cache the complete response of you laravel API.
+A helper for caching complete API Responses. Easily cache the complete response of you Laravel API.
 
 ## Installation
 
-```
+```sh
 $ composer require berthott/laravel-api-cache
 ```
 
 ## Usage
 
 * The package automatically caches all responses to GET requests when installed and enabled.
-  * The package assumes, that your routes are named according to Laravels Route::apiResource helper ('tablename.method').
+  * The package assumes, that your routes are named according to Laravels Route::apiResource helper (`tablename.method`).
   * Responses are grouped via the table name (more specifically the first part of the route name, so custom route names are supported too).
 * To automatically flush the cache corresponding to your model add the `FlushesApiCache` Trait to your model.
   * This will flush the cache for any model creation, update or deletion.
   * To also flush dependent models override the Traits `cacheDependencies` method and return a list of related route names.
+* A `FlushApiCache` event listener is available to be connected with custom model events.
 
 ## Options
 
 To change the default options use
-```
+```sh
 $ php artisan vendor:publish --provider="berthott\ApiCache\ApiCacheServiceProvider" --tag="config"
 ```
-* `enabled`: enables the feature and can be changed via CACHE_API. Defaults to `false`.
-* `ignoreRoutes`: an array of route names to be ignored from the cache. Defaults to an empty array.
-* `lifetime`: the lifetime of the cache. Defaults to `14`.
+* `enabled`: Enable the API caching. Default to `env('CACHE_API', false)`.
+* `ignoreRoutes`: An array of route names to be ignored from the cache. Defaults to `[]`.
+* `lifetime`: The lifetime of the cache in days. Defaults to `14`.
+* `key`: A key to add to each redis cache to be able to use a single redis server and avoid name clashes. Defaults to`env('CACHE_API_KEY', env('APP_NAME', 'laravel'))`.
 
 ## Compatibility
 

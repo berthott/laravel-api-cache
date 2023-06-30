@@ -12,16 +12,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Enable the API caching
+    | Redis key
     |--------------------------------------------------------------------------
+    |
+    | A key to add to each redis cache to be able to use a single redis server
+    | and avoid name clashes.
     */
 
     'key' => env('CACHE_API_KEY', env('APP_NAME', 'laravel')),
 
     /*
     |--------------------------------------------------------------------------
-    | Enable the API caching
+    | Ignored Routes
     |--------------------------------------------------------------------------
+    | 
+    | An array of route names to be ignored from the cache.
     */
 
     'ignoreRoutes' => [],
@@ -31,8 +36,7 @@ return [
     | Cache Lifetime
     |--------------------------------------------------------------------------
     |
-    | In Days.
-    |
+    | The lifetime of the cache in days.
     */
 
     'lifetime' => 14,

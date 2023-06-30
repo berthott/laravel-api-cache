@@ -7,6 +7,9 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Register the libraries features with the laravel application.
+ */
 class ApiCacheServiceProvider extends ServiceProvider
 {
     /**
@@ -14,8 +17,6 @@ class ApiCacheServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // bind singletons
-
         // add config
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'api-cache');
 
