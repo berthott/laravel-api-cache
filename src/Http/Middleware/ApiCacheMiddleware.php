@@ -18,8 +18,10 @@ class ApiCacheMiddleware
             return $next($request);
         }
         
-        return ApiCacheService::get($request->path().serialize($request->all()), function () use ($next, $request) {
-            return $next($request);
-        }, Str::replace(' ', '_', config('api-cache.key')).'_'.explode('.', $request->route()->getName())[0]);
+        return ApiCacheService::get(
+            key: $request->path().serialize($request->all()), 
+            cb: fn() => $next($request), 
+            tag: Str::replace(' ', '_', config('api-cache.key')).'_'.explode('.', $request->route()->getName())[0]
+        );
     }
 }
