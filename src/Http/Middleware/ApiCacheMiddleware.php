@@ -24,9 +24,9 @@ class ApiCacheMiddleware
         }
         
         return ApiCacheService::get(
-            key: $request->path().serialize($request->all()), 
-            cb: fn() => $next($request), 
-            tag: Str::replace(' ', '_', config('api-cache.key')).'_'.explode('.', $request->route()->getName())[0]
+            cacheKey: $request->path().serialize($request->all()), 
+            callback: fn() => $next($request), 
+            tags: Str::replace(' ', '_', config('api-cache.key')).'_'.explode('.', $request->route()->getName())[0]
         );
     }
 }
