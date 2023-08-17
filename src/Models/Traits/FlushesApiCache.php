@@ -2,6 +2,7 @@
 
 namespace berthott\ApiCache\Models\Traits;
 
+use Facades\berthott\ApiCache\Services\ApiCacheKeyService;
 use Facades\berthott\ApiCache\Services\ApiCacheService;
 use Illuminate\Support\Str;
 
@@ -47,7 +48,7 @@ trait FlushesApiCache
      */
     protected static function flushKey(): string
     {
-        return Str::snake(Str::pluralStudly(class_basename(get_called_class())));
+        return ApiCacheKeyService::getCacheKey(Str::snake(Str::pluralStudly(class_basename(get_called_class()))));
     }
 
     /**
@@ -57,7 +58,7 @@ trait FlushesApiCache
     {
         ApiCacheService::flush(static::flushKey());
         foreach (static::cacheDependencies() as $dependency) {
-            ApiCacheService::flush($dependency);
+            ApiCacheService::flush(ApiCacheKeyService::getCacheKey($dependency));
         }
     }
 }

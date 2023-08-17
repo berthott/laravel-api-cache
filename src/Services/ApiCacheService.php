@@ -3,6 +3,7 @@
 namespace berthott\ApiCache\Services;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Throwable;
 
 /**
@@ -41,5 +42,13 @@ class ApiCacheService
     {
         $store = $tags ? Cache::tags($tags) : Cache::getStore();
         $store->flush();
+    }
+
+    /**
+     * Flush the cache.
+     */
+    public function getCacheKey(string $key): string
+    {
+        return  Str::replace(' ', '_', config('api-cache.key')).'_'.$key;
     }
 }

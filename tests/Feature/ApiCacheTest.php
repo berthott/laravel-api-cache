@@ -37,24 +37,24 @@ class ApiCacheTest extends TestCase
     {
         ApiCacheService::spy();
         $dummy = DummyDummy::create(['name' => 'test']);
-        ApiCacheService::shouldHaveReceived('flush')->with('dummy_dummies')->once();
-        ApiCacheService::shouldHaveReceived('flush')->with('dummy_dummy_dependencies')->once();
+        ApiCacheService::shouldHaveReceived('flush')->with('test_key_dummy_dummies')->once();
+        ApiCacheService::shouldHaveReceived('flush')->with('test_key_dummy_dummy_dependencies')->once();
         $dummy->name = 'changed';
-        ApiCacheService::shouldHaveReceived('flush')->with('dummy_dummies')->once();
-        ApiCacheService::shouldHaveReceived('flush')->with('dummy_dummy_dependencies')->once();
+        ApiCacheService::shouldHaveReceived('flush')->with('test_key_dummy_dummies')->once();
+        ApiCacheService::shouldHaveReceived('flush')->with('test_key_dummy_dummy_dependencies')->once();
         $dummy->delete();
-        ApiCacheService::shouldHaveReceived('flush')->with('dummy_dummies');
-        ApiCacheService::shouldHaveReceived('flush')->with('dummy_dummy_dependencies');
+        ApiCacheService::shouldHaveReceived('flush')->with('test_key_dummy_dummies');
+        ApiCacheService::shouldHaveReceived('flush')->with('test_key_dummy_dummy_dependencies');
     }
 
     public function test_flush_caches_listener(): void
     {
         ApiCacheService::spy();
         DummyDummy::create(['name' => 'test']);
-        ApiCacheService::shouldHaveReceived('flush')->with('dummy_dummies')->once();
-        ApiCacheService::shouldHaveReceived('flush')->with('dummy_dummy_dependencies')->once();
+        ApiCacheService::shouldHaveReceived('flush')->with('test_key_dummy_dummies')->once();
+        ApiCacheService::shouldHaveReceived('flush')->with('test_key_dummy_dummy_dependencies')->once();
         (new FlushApiCache())->handle(new TestEvent(DummyDummy::class));
-        ApiCacheService::shouldHaveReceived('flush')->with('dummy_dummies')->twice();
-        ApiCacheService::shouldHaveReceived('flush')->with('dummy_dummy_dependencies')->twice();
+        ApiCacheService::shouldHaveReceived('flush')->with('test_key_dummy_dummies')->twice();
+        ApiCacheService::shouldHaveReceived('flush')->with('test_key_dummy_dummy_dependencies')->twice();
     }
 }

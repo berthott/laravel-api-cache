@@ -2,10 +2,10 @@
 
 namespace berthott\ApiCache\Http\Middleware;
 
+use Facades\berthott\ApiCache\Services\ApiCacheKeyService;
 use Facades\berthott\ApiCache\Services\ApiCacheService;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 /**
  * Middleware to handle the caching.
@@ -26,7 +26,7 @@ class ApiCacheMiddleware
         return ApiCacheService::get(
             cacheKey: $request->path().serialize($request->all()), 
             callback: fn() => $next($request), 
-            tags: Str::replace(' ', '_', config('api-cache.key')).'_'.explode('.', $request->route()->getName())[0]
+            tags: ApiCacheKeyService::getCacheKey(explode('.', $request->route()->getName())[0])
         );
     }
 }
