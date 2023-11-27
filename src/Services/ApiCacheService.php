@@ -49,6 +49,6 @@ class ApiCacheService
      */
     public function getCacheKey(string $key): string
     {
-        return  Str::replace(' ', '_', config('api-cache.key')).'_'.$key;
+        return Str::replace(' ', '_', config('api-cache.key')).'_'.$key;
     }
 }
