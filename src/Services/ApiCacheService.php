@@ -43,7 +43,7 @@ class ApiCacheService
     {
         $store = $tags ? Cache::tags($tags) : Cache::getStore();
         $store->flush();
-        Log::channel('api-cache')->info('Flushed', $tags ?: 'completely');
+        Log::channel('api-cache')->info('Flushed', ['tags' => $tags ?: 'completely']);
     }
 
     /**
