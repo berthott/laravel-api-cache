@@ -3,6 +3,7 @@
 namespace berthott\ApiCache\Services;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Throwable;
 
@@ -42,6 +43,7 @@ class ApiCacheService
     {
         $store = $tags ? Cache::tags($tags) : Cache::getStore();
         $store->flush();
+        Log::channel('api-cache')->info('Flushed', $tags ?: 'completely');
     }
 
     /**
