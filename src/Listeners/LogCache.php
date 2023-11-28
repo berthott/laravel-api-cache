@@ -2,7 +2,7 @@
 
 namespace berthott\ApiCache\Listeners;
 
-use Illuminate\Support\Facades\Log;
+use Facades\berthott\ApiCache\Services\ApiCacheLogService;
 
 /**
  * An event listener to log the cache.
@@ -16,6 +16,6 @@ class LogCache
      */
     public function handle(mixed $event)
     {
-        Log::channel('api-cache')->info(class_basename(get_class($event)), ['key' => $event->key, 'tags' => $event->tags]);
+        ApiCacheLogService::log(class_basename(get_class($event)), key: $event->key, tags: $event->tags);
     }
 }

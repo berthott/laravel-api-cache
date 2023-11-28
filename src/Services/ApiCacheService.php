@@ -2,9 +2,8 @@
 
 namespace berthott\ApiCache\Services;
 
+use Facades\berthott\ApiCache\Services\ApiCacheLogService;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 use Throwable;
 
 /**
@@ -20,18 +19,20 @@ class ApiCacheService
      * 
      * Optionally tags can be used to cluster keys.
      */
-    public function get(string $cacheKey, callable $callback, mixed $tags = false)
+    public function get(string $key, callable $callback, mixed $tags = false)
     {
         $store = $tags ? Cache::tags($tags) : Cache::getStore();
-        if ($store->has($cacheKey)) {
-            return $store->get($cacheKey);
+        if ($store->has($key)) {
+            ApiCacheLogService::log('Get', $key, $tags);
+            return $store->get($key);
         }
 
         $response = $callback();
         try {
-            $store->put($cacheKey, $response, now()->addDays(config('api-cache.lifetime')));
+            $store->put($key, $response, now()->addDays(config('api-cache.lifetime')));
+            ApiCacheLogService::log('Put', $key, $tags);
         } catch (Throwable $error) {
-            // just catch the error
+            ApiCacheLogService::log('Error while putting', $key, $tags);
         }
         return $response;
     }
@@ -43,14 +44,6 @@ class ApiCacheService
     {
         $store = $tags ? Cache::tags($tags) : Cache::getStore();
         $store->flush();
-        Log::channel('api-cache')->info('Flushed', ['tags' => $tags ?: 'completely']);
-    }
-
-    /**
-     * Flush the cache.
-     */
-    public function getCacheKey(string $key): string
-    {
-        return Str::replace(' ', '_', config('api-cache.key')).'_'.$key;
+        ApiCacheLogService::log('Flushed', $tags);
     }
 }

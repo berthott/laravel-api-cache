@@ -24,7 +24,7 @@ class ApiCacheMiddleware
         }
         
         return ApiCacheService::get(
-            cacheKey: $request->path().serialize($request->all()), 
+            key: $request->path().serialize($request->all()), 
             callback: fn() => $next($request), 
             tags: ApiCacheKeyService::getCacheKey(explode('.', $request->route()->getName())[0])
         );

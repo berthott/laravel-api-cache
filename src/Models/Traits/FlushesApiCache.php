@@ -2,6 +2,7 @@
 
 namespace berthott\ApiCache\Models\Traits;
 
+use Facades\berthott\ApiCache\Services\ApiCacheLogService;
 use Facades\berthott\ApiCache\Services\ApiCacheKeyService;
 use Facades\berthott\ApiCache\Services\ApiCacheService;
 use Illuminate\Support\Str;
@@ -31,14 +32,17 @@ trait FlushesApiCache
     public static function bootFlushesApiCache()
     {
         static::created(function () {
+            ApiCacheLogService::log('Created '.class_basename(get_called_class()));
             static::flushCache();
         });
 
         static::updated(function () {
+            ApiCacheLogService::log('Updated '.class_basename(get_called_class()));
             static::flushCache();
         });
 
         static::deleted(function () {
+            ApiCacheLogService::log('Deleted '.class_basename(get_called_class()));
             static::flushCache();
         });
     }
@@ -58,6 +62,7 @@ trait FlushesApiCache
     {
         ApiCacheService::flush(static::flushKey());
         foreach (static::cacheDependencies() as $dependency) {
+            ApiCacheLogService::log('Flush dependency '.class_basename(get_called_class()).': '.$dependency);
             ApiCacheService::flush(ApiCacheKeyService::getCacheKey($dependency));
         }
     }
