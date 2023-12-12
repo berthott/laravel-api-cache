@@ -29,6 +29,13 @@ $ php artisan vendor:publish --provider="berthott\ApiCache\ApiCacheServiceProvid
 * `lifetime`: The lifetime of the cache in days. Defaults to `14`.
 * `key`: A key to add to each redis cache to be able to use a single redis server and avoid name clashes. Defaults to`env('CACHE_API_KEY', env('APP_NAME', 'laravel'))`.
 
+## Architecture
+
+* The actual caching is done in `ApiCacheService`
+* A store-key is used to connect requests / cached responses to a specific model / entity
+* An `ApiCacheMiddleware` intercepts all http requests and calls `ApiCacheService`
+* The `FlushesApiCache` trait observes creating / updating / deleting models and will clear the cache for the corresponding store 
+
 ## Compatibility
 
 Tested with Laravel 10.x.
