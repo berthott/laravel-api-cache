@@ -44,6 +44,6 @@ class ApiCacheService
     {
         $store = $tags ? Cache::tags($tags) : Cache::getStore();
         $store->flush();
-        ApiCacheLogService::log('Flushed', $tags);
+        ApiCacheLogService::log('Flushed', tags: $tags);
     }
 }
