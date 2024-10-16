@@ -33,6 +33,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Include Routes
+    |--------------------------------------------------------------------------
+    | 
+    | An array of route names to be included in the cache.
+    | GET requests are included by default, here you should specify routes
+    | that use the POST / PUT / DELETE methods. 
+    | A wildcard can be used to include all actions.
+    |
+    | Caution: does it really make sense to cache these routes?
+    */
+
+    'includeRoutes' => [],
+
+    /*
+    |--------------------------------------------------------------------------
     | Cache Lifetime
     |--------------------------------------------------------------------------
     |

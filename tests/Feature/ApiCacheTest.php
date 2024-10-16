@@ -34,6 +34,22 @@ class ApiCacheTest extends TestCase
         $this->get(route('dummy_dummies.ignore'));
     }
 
+    public function test_route_caches_include(): void
+    {
+        ApiCacheService::shouldReceive('get')
+            ->withSomeOfArgs('api/dummy_dummies/include:35786c7117b4e38d0f169239752ce71158266ae2f6e4aa230fbbb87bd699c0e3', 'test_key_dummy_dummies')
+            ->andReturn(new Response('cached Value'));
+        $this->post(route('dummy_dummies.include'))->assertSeeText('cached Value');
+    }
+
+    public function test_route_caches_include_wildcard(): void
+    {
+        ApiCacheService::shouldReceive('get')
+            ->withSomeOfArgs('api/dummy_dummies/include_me_too:35786c7117b4e38d0f169239752ce71158266ae2f6e4aa230fbbb87bd699c0e3', 'test_key_dummy_dummies')
+            ->andReturn(new Response('cached Value'));
+        $this->post(route('dummy_dummies.include_me_too'))->assertSeeText('cached Value');
+    }
+
     public function test_flush_caches(): void
     {
         ApiCacheService::spy();

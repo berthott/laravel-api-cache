@@ -28,6 +28,10 @@ abstract class TestCase extends BaseTestCase
         Config::set('api-cache.enabled', true);
         Config::set('api-cache.key', 'test key');
         Config::set('api-cache.ignoreRoutes', ['dummy_dummies.ignore']);
+        Config::set('api-cache.includeRoutes', [
+            'dummy_dummies.include',
+            '*.include_me_too',
+        ]);
         $this->setUpTables();
         Route::prefix('api')
             ->middleware('api')
@@ -38,6 +42,12 @@ abstract class TestCase extends BaseTestCase
                 Route::get('/dummy_dummies', function () {
                     return 'hello';
                 })->name('dummy_dummies.ignore');
+                Route::post('/dummy_dummies/include', function () {
+                    return 'hello';
+                })->name('dummy_dummies.include');
+                Route::post('/dummy_dummies/include_me_too', function () {
+                    return 'hello';
+                })->name('dummy_dummies.include_me_too');
             });
     }
 
