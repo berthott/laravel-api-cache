@@ -24,12 +24,12 @@ class ApiCacheService
         $store = $tags ? Cache::tags($tags) : Cache::getStore();
         if ($store->has($key)) {
             ApiCacheLogService::log('Get', $key, $tags);
-            return $store->get($key);
+            return unserialize(gzuncompress($store->get($key)));
         }
 
         $response = $callback();
         try {
-            $store->put($key, $response, now()->addDays(config('api-cache.lifetime')));
+            $store->put($key, gzcompress(serialize($response)), now()->addDays(config('api-cache.lifetime')));
             ApiCacheLogService::log('Put', $key, $tags);
         } catch (Throwable $error) {
             ApiCacheLogService::log('Error while putting', $key, $tags);
