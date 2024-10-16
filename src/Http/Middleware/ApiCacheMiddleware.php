@@ -24,9 +24,17 @@ class ApiCacheMiddleware
         }
         
         return ApiCacheService::get(
-            key: $request->path().serialize($request->all()), 
+            key: $this->buildCacheKey($request), 
             callback: fn() => $next($request), 
             tags: ApiCacheKeyService::getCacheKey(explode('.', $request->route()->getName())[0])
         );
+    }
+
+    /**
+     * Build the cache key.
+     */
+    private function buildCacheKey(Request $request): string
+    {
+        return $request->path().':'.hash('sha256', serialize($request->all()));
     }
 }
