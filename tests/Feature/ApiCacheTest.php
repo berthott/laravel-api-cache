@@ -23,7 +23,7 @@ class ApiCacheTest extends TestCase
     {
         $route = route('dummy_dummies.test', ['dummy_dummy' => '1', 'some_more_args' => 'hallo']);
         ApiCacheService::shouldReceive('get')
-            ->withSomeOfArgs('api/alongtesturl/dummy_dummies/1a:1:{s:14:"some_more_args";s:5:"hallo";}', 'test_key_dummy_dummies')
+            ->withSomeOfArgs('api/alongtesturl/dummy_dummies/1:de8568fc32afff5fea91a8d3505eda1e56f42c30d16800ebe2f7fe88a715ceae', 'test_key_dummy_dummies')
             ->andReturn(new Response('cached Value'));
         $this->get($route)->assertSeeText('cached Value');
     }
@@ -62,7 +62,7 @@ class ApiCacheTest extends TestCase
     public function test_cache_log(): void
     {
         $route = route('dummy_dummies.test', ['dummy_dummy' => '1']);
-        $json = '{"key":"api/alongtesturl/dummy_dummies/1a:0:{}","tags":["test_key_dummy_dummies"]}';
+        $json = '{"key":"api/alongtesturl/dummy_dummies/1:35786c7117b4e38d0f169239752ce71158266ae2f6e4aa230fbbb87bd699c0e3","tags":["test_key_dummy_dummies"]}';
         $missed = 'CacheMissed '.$json;
         $written = 'KeyWritten '.$json;
         $hit = 'CacheHit '.$json;
