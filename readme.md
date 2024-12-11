@@ -1,3 +1,5 @@
+![test workflow](https://github.com/berthott/laravel-api-cache/actions/workflows/test.yml/badge.svg)
+
 # Laravel-API-Cache
 
 A helper for caching complete API Responses. Easily cache the complete response of you Laravel API.
